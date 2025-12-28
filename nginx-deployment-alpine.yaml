@@ -5,17 +5,17 @@ kind: Deployment
 metadata:
   name: nginx-deployment
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: nginx # ラベルでpodを絞り込み
+      app: nginx
   template:
     metadata:
       labels:
-        app: nginx # podにラベル付与
+        app: nginx
     spec:
       containers:
         - name: nginx
-          image: nginx:1.25
+          image: nginx:1.25-alpine # イメージ変更
           ports:
             - containerPort: 80
