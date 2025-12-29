@@ -1,0 +1,63 @@
+# StatefulSetのマニフェスト
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-statefulset
+spec:
+  serviceName: "nginx" # PodのDNS名を解決するためのHeadless Service名
+  replicas: 3 # Podを3つ実行
+  selector:
+    matchLabels:
+      app: nginx # このラベルを持つPodをStatefulSetの管理対象とする
+  template:
+    metadata:
+      labels:
+        app: nginx # Podにラベルを付与
+    spec:
+      containers:
+        # nginxイメージを実行するコンテナ
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: vol # コンテナ間で共有するボリューム(vol)をマウント
+              mountPath: /usr/share/nginx/html
+        # タイムスタンプを書き込むコンテナ
+        - name: recorder
+          image: alpine:3.18
+          command: ["sh"]
+          args:
+            - -euc
+            - |
+              for i in $(seq 1 10) ; do
+                echo '{"host": "'$(hostname)'", "time": "'$(date)'"}' >> /mnt/state.json
+                sleep 3
+              done ; sleep infinity
+          volumeMounts:
+            - name: vol # コンテナ間で共有するボリューム(vol)をマウント
+              mountPath: /mnt/
+  # コンテナ間で共有するボリューム(vol)の定義
+  volumeClaimTemplates:
+    - metadata:
+        name: vol
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
+--- # 1つのYAMLファイル内に複数のKubernetesリソースを定義するために必要
+# Headless Serviceの定義
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  ports:
+    - port: 80
+  clusterIP: None # これによりHeadless Serviceになる
+  selector:
+    app: nginx # このラベルを持つPodをServiceの対象とする

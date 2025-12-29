@@ -1,4 +1,5 @@
 # nginxをデプロイするマニフェスト
+# デフォルトでローリングアップデート
 
 apiVersion: apps/v1
 kind: Deployment
