@@ -2,7 +2,7 @@
 
 ## Keyword
 
-**マニフェスト**
+**マニフェスト**  
 Kubernetes リソース（Pod、Deployment、Service など）の設定を定義した YAML/JSON ファイル。
 
 **Pod**  
