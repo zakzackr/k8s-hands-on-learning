@@ -20,7 +20,13 @@ StatefulSet は、ステートフルな Pod 管理に使用される。各 Pod �
 
 Deployment では、ノードにしばられず「クラスタ上で X 個の Pod を起動・管理する」点が、DaemonSet とは異なる。
 
-**Jobs**
-Job は、1 つ以上の Pod を作成し、指定した数の Pod が正常終了するまで Pod を再実行する。
+**Jobs**  
+Job は、1 つ以上の Pod を単発で実行する。具体的には、成功する必要のある Pod 数、再実行ポリシー、許容する失敗回数などをマニフェストで設定することで、k8s がそれに従い Pod をデプロイ・実行して、指定した数の Pod が正常終了するまで Pod を再実行する。
+
+継続的にサービスを提供する Deployment とは対照的。
+
+**ConfigMap, Secret**
+ConfigMap、Secret は、コンテナイメージと環境依存の情報や機密情報を独立して管理できるようにする。
+ConfigMap は、Pod に対して環境変数やボリュームという形で非機密データを提供する。Secret は、認証情報などの機密データを提供する。
 
 **Headless Service**

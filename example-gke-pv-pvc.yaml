@@ -1,0 +1,26 @@
+# Persistent Volumeの定義
+apiVersion: v1
+kind: PersistentVolume
+metadata: # 修正: metaname -> metadata
+  name: example-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes: # 修正: accessMode -> accessModes
+    - ReadWriteOnce
+  storageClassName: manual
+  hostPath:
+    path: "/data/pv-example" # ノード上のこのディレクトリが使用される
+---
+# Persistent Volume Claimの定義
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: example-pvc
+spec:
+  accessModes: # 修正: accessMode -> accessModes
+    - ReadWriteOnce
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 1Gi
