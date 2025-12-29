@@ -1,0 +1,17 @@
+# Jobマニフェスト
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-example
+spec:
+  completions: 3 # 3つのPodが正常に終了したらJob成功
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: test
+          image: ubuntu:20.04
+          command: ["sh"]
+          args:
+            - -euc
+            - "echo done &(hostname)"
