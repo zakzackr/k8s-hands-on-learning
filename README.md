@@ -1,6 +1,6 @@
 # k8s-hands-on-learning
 
-## Keyword
+## Keywords
 
 **マニフェスト**  
 Kubernetes リソース（Pod、Deployment、Service など）の設定を定義した YAML/JSON ファイル。
@@ -13,7 +13,7 @@ Pod は kubernetes における最小のデプロイ単位で、ストレージ�
 稼働する Pod 群を管理する。Pod のスケーリング、アップデート、自動復旧などを担当する。Deployment では Pod の削除とともに、データも削除される。
 
 **StatefulSet**  
-StatefulSet は、ステートフルな Pod 管理に使用される。各 Pod に固有のボリュームを割り当てることで、データの永続化が可能になり、Pod の削除・再起動後も一貫したデータを持つ。各 Pod をインデックスで一意に識別・管理することで、正しい順序（インデックス順）で Pod の起動・終了が可能。
+StatefulSet は、ステートフルな Pod 管理に使用される。各 Pod に固有のボリュームを割り当てることでデータを永続化でき、Pod を削除・再起動しても一貫したデータを保持できる。各 Pod をインデックスで一意に識別・管理することで、正しい順序（インデックス順）で Pod の起動・終了が可能。
 
 **DaemonSet**  
 各ノードに Pod のコピーが 1 つずつ実行されている状態を維持する機能。クラスタにノードが追加されたり、DaemonSet の Pod が稼働しているべきノード上で稼働していないとき、Pod を作成する。
@@ -25,8 +25,15 @@ Job は、1 つ以上の Pod を単発で実行する。具体的には、成功
 
 継続的にサービスを提供する Deployment とは対照的。
 
-**ConfigMap, Secret**
+**ConfigMap, Secret**  
 ConfigMap、Secret は、コンテナイメージと環境依存の情報や機密情報を独立して管理できるようにする。
 ConfigMap は、Pod に対して環境変数やボリュームという形で非機密データを提供する。Secret は、認証情報などの機密データを提供する。
+
+**Volume**  
+_Persistent Volumes_  
+Pod とは独立のライフタイムを持ち、Pod が削除されてもデータは残る。
+
+_Ephemeral Volumes_  
+Pod と同じライフタイムを持ち、Pod が終了するとボリュームも削除される。ノード上の空のディレクトリやメモリをボリュームとして用いる emptyDir ボリュームがその一例。
 
 **Headless Service**

@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+spec:
+  containers:
+    - name: container-a
+      image: ubuntu:22.04
+      command: ["sh"]
+      args:
+        - -euc
+        - "tail -f /mnt/shared-file"
+      # volumeを「/mnt/」にマウント
+      volumeMounts:
+        - mountPath: /mnt/
+          name: test-volume
+    - name: container-b
+      image: ubuntu:22.04
+      command: ["sh"]
+      args:
+        - -euc
+        - |
+          for i in $(seq 1 10) ; do
+            date >> /mnt/shared-file
+            sleep 3
+          done; sleep infinity
+      # volumeを「/mnt/」にマウント
+      volumeMounts:
+        - mountPath: /mnt/
+          name: test-volume
+  volumes:
+    # emptyDirを「test-volume」ボリュームとして使用
+    - name: test-volume
+      emptyDir:
+        sizeLimit: 500Mi
