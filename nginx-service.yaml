@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx # 「nginx」ラベルを持つPodに対してServiceを定義
+  ports:
+    - protocol: TCP
+      port: 8080 # Serviceがlistenするポート番号
+      targetPort: 80 # Podがlistenするポート番号
